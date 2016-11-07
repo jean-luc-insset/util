@@ -5,10 +5,13 @@
  */
 package fr.insset.jeanluc.util.coll;
 
+import fr.insset.jeanluc.util.factory.FactoryMethods;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -120,7 +123,12 @@ public class CompositeCollection<T> implements Collection<T> {
 
     @Override
     public boolean containsAll(Collection<?> c) {
-        List     aux = new LinkedList();
+        List     aux = null;
+        try {
+            aux = FactoryMethods.newList(Class.class);
+        } catch (InstantiationException ex) {
+            Logger.getLogger(CompositeCollection.class.getName()).log(Level.SEVERE, null, ex);
+        }
         for (Object t : this) {
             aux.add(t);
         }

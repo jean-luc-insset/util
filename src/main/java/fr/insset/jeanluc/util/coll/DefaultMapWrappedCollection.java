@@ -5,6 +5,7 @@
  */
 package fr.insset.jeanluc.util.coll;
 
+import fr.insset.jeanluc.util.factory.FactoryMethods;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -22,8 +23,13 @@ import java.util.function.Function;
  */
 public class DefaultMapWrappedCollection<T extends Mappable> implements MapWrappedCollection<T> {
 
+    /**
+     * Uses a LinkedList as underlying collection.
+     * If the caller needs an other kind of collection, she could use the
+     * dedicated constructor.
+     */
     public DefaultMapWrappedCollection() {
-        this(new LinkedList<>());
+        this(new LinkedList<T>());
     }
 
 

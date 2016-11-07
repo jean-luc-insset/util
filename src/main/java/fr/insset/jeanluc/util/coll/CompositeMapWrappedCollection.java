@@ -5,25 +5,28 @@
  */
 package fr.insset.jeanluc.util.coll;
 
+import fr.insset.jeanluc.util.factory.FactoryMethods;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author jldeleage
  */
-public class CompositeHashMapWrappedCollection<T extends Mappable>
+public class CompositeMapWrappedCollection<T extends Mappable>
         extends DefaultMapWrappedCollection<T>
         implements MapWrappedCollection<T> {
 
-    public CompositeHashMapWrappedCollection(Collection<T> delegue) {
+    public CompositeMapWrappedCollection(Collection<T> delegue) {
         super(delegue);
     }
 
 
-    public CompositeHashMapWrappedCollection(Collection<T> delegue, MapWrappedCollection<T> parent) {
+    public CompositeMapWrappedCollection(Collection<T> delegue, MapWrappedCollection<T> parent) {
         super(delegue);
         this.parent = parent;
     }
@@ -36,7 +39,12 @@ public class CompositeHashMapWrappedCollection<T extends Mappable>
     @Override
     public Collection<T> values() {
         Set<Object> keySet = keySet();
-        Collection<T>   result = new LinkedList<>();
+        Collection<T>   result = null;
+        try {
+            result = FactoryMethods.newList(null);
+        } catch (InstantiationException ex) {
+            Logger.getLogger(CompositeMapWrappedCollection.class.getName()).log(Level.SEVERE, null, ex);
+        }
         for (Object key : keySet) {
             result.add(get(key));
         }

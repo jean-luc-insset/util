@@ -30,7 +30,7 @@ public abstract class RegisterHashMapWrappedCollectionFactory {
                                 return new DefaultMapWrappedCollection((Collection)inArgs[0]);
                             }
                             else {
-                                return new CompositeHashMapWrappedCollection((Collection) inArgs[0], (MapWrappedCollection)inArgs[1]);
+                                return new CompositeMapWrappedCollection((Collection) inArgs[0], (MapWrappedCollection)inArgs[1]);
                             }
                         }       // newInstance
                     };      // new AbstractFactory
