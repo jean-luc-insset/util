@@ -12,8 +12,10 @@ import java.util.logging.Logger;
 
 /**
  * An instance of this class can visit anything.<br>
- * To achieve this goal, the instance can maintain a map linking a method to
+ * To achieve this goal, the instance maintains a map linking a method to
  * any class to visit.<br>
+ * Usage :<br>
+ * {@code myVisitor.genericVisit(objectToVisit, parameter);}
  *
  * @author jldeleage
  */
@@ -30,7 +32,7 @@ public class DynamicVisitorSupport {
      * 
      * @param inPrefix 
      */
-    public void register(String inPrefix, String... inPackages) {
+    public final void register(String inPrefix, String... inPackages) {
         Method[] methods = getClass().getMethods();
         for (int i=0 ; i<inPackages.length ; i++)
         for (Method m : methods) {
@@ -56,7 +58,7 @@ public class DynamicVisitorSupport {
     }       // register
 
 
-    public void register(Class inClass, Method inMethod) {
+    public final void register(Class inClass, Method inMethod) {
         visitingMethods.put(inClass, inMethod);
     }
 
