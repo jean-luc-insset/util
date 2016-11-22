@@ -35,7 +35,7 @@ public class DynamicVisitorSupport {
     public final void register(String inPrefix, String... inPackages) {
         Method[] methods = getClass().getMethods();
         for (int i=0 ; i<inPackages.length ; i++)
-        for (Method m : methods) {
+            methods: for (Method m : methods) {
             String name = m.getName();
             if (name.startsWith(inPrefix)) {
                 name = name.substring(inPrefix.length());
@@ -46,6 +46,7 @@ public class DynamicVisitorSupport {
                     try {
                         Class<?> forName = Class.forName(aPackage + name);
                         register (forName, m);
+                        continue methods;
                     }
                     catch (Exception e) {
                         System.out.println("Class not found : " + aPackage + name);
@@ -63,7 +64,7 @@ public class DynamicVisitorSupport {
     }
 
 
-    public Object genericVisit(Object inVisited, Object inParameter) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+    public Object genericVisit(Object inVisited, Object... inParameter) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
         Class visitedClass = inVisited.getClass();
         Method lookFor = lookFor(visitedClass);
         if (lookFor != null) {
@@ -95,10 +96,10 @@ public class DynamicVisitorSupport {
         } while (current != null);
         Class[] interfaces = inClass.getInterfaces();
         for (Class anInterface : interfaces) {
-            Method m = visitingMethods.get(anInterface);
+            Method m = lookFor(anInterface);
             if (m!= null) {
                 return m;
-            }            
+            }
         }
         return null;
     }
