@@ -53,9 +53,20 @@ public interface FactoryRegistry extends Hierarchy {
         return result;
     }
 
+
+
     public static void setRegistry(FactoryRegistry inRegistry) {
         registry.set(inRegistry);
     }
+
+
+    public static FactoryRegistry  pushNewRegistry() {
+        FactoryRegistry     registry = getRegistry();
+        FactoryRegistry child = registry.createChild();
+        setRegistry(child);
+        return child;
+    }
+
 
     /**
      * Replaces the current registry by its parent.
@@ -103,5 +114,27 @@ public interface FactoryRegistry extends Hierarchy {
     }
 
 
+    //========================================================================//
+    // S H O R T C U T S                                                      //
+    //========================================================================//
+
+
+    public static Object newInstance(String inId) throws InstantiationException {
+        FactoryRegistry registry = getRegistry();
+        AbstractFactory factory = registry.getFactory(inId);
+        return factory.newInstance();
+    }
+
+    public static void register(String inId, Class inClass) {
+        FactoryRegistry registry = getRegistry();
+        if (registry == null) {
+            registry = new FactoryRegistryImpl(null);
+            setRegistry(registry);
+        }
+        registry.registerDefaultFactory(inId, inClass);
+    }
+
+
 
 }
+

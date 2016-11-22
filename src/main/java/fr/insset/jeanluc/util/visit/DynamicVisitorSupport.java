@@ -1,7 +1,6 @@
 
 package fr.insset.jeanluc.util.visit;
 
-import fr.insset.jeanluc.util.EteException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
@@ -18,7 +17,7 @@ import java.util.logging.Logger;
  *
  * @author jldeleage
  */
-public class DynamicVisitorUtil {
+public class DynamicVisitorSupport {
 
     /**
      * Scans this object looking for methods starting with <code>inPrefix</code>.
@@ -62,17 +61,12 @@ public class DynamicVisitorUtil {
     }
 
 
-    public Object genericVisit(Object inVisited, Object inParameter) throws EteException {
+    public Object genericVisit(Object inVisited, Object inParameter) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
         Class visitedClass = inVisited.getClass();
         Method lookFor = lookFor(visitedClass);
         if (lookFor != null) {
-            try {
-                Object result = lookFor.invoke(this, new Object[] {inVisited, inParameter });
-                return result;
-            } catch (IllegalAccessException | IllegalArgumentException| InvocationTargetException ex) {
-                Logger.getLogger(DynamicVisitorUtil.class.getName()).log(Level.SEVERE, null, ex);
-                throw new EteException(ex);
-            }
+            Object result = lookFor.invoke(this, new Object[] {inVisited, inParameter });
+            return result;
         }
         return null;
     }
