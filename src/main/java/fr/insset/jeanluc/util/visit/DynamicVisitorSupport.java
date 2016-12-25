@@ -21,6 +21,7 @@ import java.util.logging.Logger;
  */
 public class DynamicVisitorSupport {
 
+
     /**
      * Scans this object looking for methods starting with <code>inPrefix</code>.
      * For each such method, looks for a class in the packages with a
@@ -60,6 +61,7 @@ public class DynamicVisitorSupport {
 
 
     public final void register(Class inClass, Method inMethod) {
+        System.out.println("-- registering " + inMethod.getName() + " for class " + inClass.getName());
         visitingMethods.put(inClass, inMethod);
     }
 
@@ -73,7 +75,6 @@ public class DynamicVisitorSupport {
         }
         return null;
     }
-
 
 
 
@@ -103,6 +104,7 @@ public class DynamicVisitorSupport {
         }
         return null;
     }
+
 
     protected Method lookForInterface(Class inInterface) {
         Method method = visitingMethods.get(inInterface);

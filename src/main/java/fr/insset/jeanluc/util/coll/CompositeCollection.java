@@ -113,12 +113,17 @@ public class CompositeCollection<T> implements Collection<T> {
 
     @Override
     public boolean add(T e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return getCollectionWhereToAdd(e).add(e);
     }
 
     @Override
     public boolean remove(Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        for (Collection<T> coll : collections) {
+            if (coll.remove(o)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
@@ -145,12 +150,20 @@ public class CompositeCollection<T> implements Collection<T> {
 
     @Override
     public boolean addAll(Collection<? extends T> c) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        boolean     result = false;
+        for (T obj : c) {
+            result |= add(obj);
+        }
+        return result;
     }
 
     @Override
     public boolean removeAll(Collection<?> c) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        boolean result = false;
+        for (Object obj : c) {
+            result |= remove(obj);
+        }
+        return result;
     }
 
     @Override
@@ -158,11 +171,24 @@ public class CompositeCollection<T> implements Collection<T> {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+
     @Override
     public void clear() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        for (Collection coll : collections) {
+            coll.clear();
+        }
     }
 
+
+    //========================================================================//
+
+
+    protected   Collection<T>   getCollectionWhereToAdd(T e) {
+        return collections[collections.length-1];
+    }
+
+
     private Collection<T>[]  collections;
+
 
 }
