@@ -69,6 +69,9 @@ public class CompositeCollection<T> implements Collection<T> {
                 if (current.hasNext()) {
                     nextElement = current.next();
                 }
+                else {
+                    nextIterator();
+                }
                 return result;
             }
             protected void nextIterator() {
