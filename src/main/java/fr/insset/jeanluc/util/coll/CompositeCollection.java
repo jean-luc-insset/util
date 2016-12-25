@@ -183,6 +183,14 @@ public class CompositeCollection<T> implements Collection<T> {
     //========================================================================//
 
 
+    public      void            addCollection(Collection<T> inCollection) {
+        Collection[]    aux = new Collection[collections.length + 1];
+        System.arraycopy(collections, 0, aux, 0, collections.length);
+        aux[collections.length] = inCollection;
+        collections = aux;
+    }
+
+
     protected   Collection<T>   getCollectionWhereToAdd(T e) {
         return collections[collections.length-1];
     }
