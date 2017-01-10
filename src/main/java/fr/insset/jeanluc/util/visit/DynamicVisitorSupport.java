@@ -50,7 +50,6 @@ public class DynamicVisitorSupport {
                         continue methods;
                     }
                     catch (Exception e) {
-                        System.out.println("Class not found : " + aPackage + name);
                         // this exception does not matter : there is no class
                         // with the selected name in this package
                     }
@@ -61,7 +60,7 @@ public class DynamicVisitorSupport {
 
 
     public final void register(Class inClass, Method inMethod) {
-        System.out.println("-- registering " + inMethod.getName() + " for class " + inClass.getName());
+        Logger.getGlobal().log(Level.FINE, "-- registering " + inMethod.getName() + " for class " + inClass.getName());
         visitingMethods.put(inClass, inMethod);
     }
 
