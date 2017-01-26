@@ -23,7 +23,7 @@ package fr.insset.jeanluc.util.factory;
 public interface FactoryRegistry extends Hierarchy {
 
 
-    public final static String  FACTORY_REGISTRY = "factory-registry";
+    public final static String  FACTORY_REGISTRY = "factory_registry";
 
     public final static ThreadLocal<FactoryRegistry> registry = new ThreadLocal<>();
 
