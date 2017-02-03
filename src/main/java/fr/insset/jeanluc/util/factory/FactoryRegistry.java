@@ -40,7 +40,7 @@ public interface FactoryRegistry extends Hierarchy {
 
 
     //------------------------------------------------------------------------//
-    // Concurrences and singleton
+    // Concurrence and hierearchy
     //------------------------------------------------------------------------//
 
 

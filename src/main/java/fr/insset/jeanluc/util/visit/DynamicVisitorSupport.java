@@ -12,8 +12,8 @@ import java.util.logging.Logger;
 
 /**
  * An instance of this class can visit anything.<br>
- * To achieve this goal, the instance maintains a map linking a method to
- * any class to visit.<br>
+ * To achieve this goal, the instance maintains a map linking classes to
+ * visiting methods.<br>
  * Usage :<br>
  * {@code myVisitor.genericVisit(objectToVisit, parameter);}
  *
@@ -28,8 +28,9 @@ public class DynamicVisitorSupport {
      * matching name.<br>
      * For example if the prefix is <code>visit</code>, there is a method
      * named <code>visitBinaryOperation</code> and a class named
-     * <code>BinaryOperation</code>, the couple (BinaryOperation.class,
-     * visitBinaryOperation) is registered.
+     * <code>BinaryOperation</code> is found in one of the packages, the
+     * <code>couple (BinaryOperation.class, visitBinaryOperation)</code> is
+     * registered.
      * 
      * @param inPrefix 
      */
@@ -60,12 +61,28 @@ public class DynamicVisitorSupport {
 
 
     public final void register(Class inClass, Method inMethod) {
-        Logger.getGlobal().log(Level.FINE, "-- registering " + inMethod.getName() + " for class " + inClass.getName());
+        Logger.getGlobal().log(Level.FINE, "-- registering {0} for class {1}", new Object[]{inMethod.getName(), inClass.getName()});
         visitingMethods.put(inClass, inMethod);
     }
 
 
-    public Object genericVisit(Object inVisited, Object... inParameter) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+    public final void register(Class inClass, String inMethodName) {
+        Method[] methods = getClass().getDeclaredMethods();
+        for (Method m : methods) {
+            if (m.getName().equals(inMethodName)) {
+                register(inClass, m);
+                break;
+            }
+        }
+    }
+
+
+
+    //========================================================================//
+
+
+    public Object genericVisit(Object inVisited, Object... inParameter)
+            throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
         Class visitedClass = inVisited.getClass();
         Method lookFor = lookFor(visitedClass);
         if (lookFor != null) {
@@ -75,6 +92,9 @@ public class DynamicVisitorSupport {
         return null;
     }
 
+
+
+    //========================================================================//
 
 
     /**

@@ -5,9 +5,11 @@
  */
 package fr.insset.jeanluc.util.factory;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -19,6 +21,7 @@ public class FactoryMethods {
 
     public final static String  LIST    = "list";
     public final static String  SET     = "set";
+    public final static String  MAP     = "map";
 
     
     public  static  <T>   List<T>   newList(Class<T> inClass) throws InstantiationException {
@@ -36,6 +39,7 @@ public class FactoryMethods {
         return (List<T>)factory.newInstance();
     }
 
+
     
     public  static  <T>   Set<T>   newSet(Class<T> inClass) throws InstantiationException {
         FactoryRegistry registry = FactoryRegistry.getRegistry();
@@ -50,6 +54,21 @@ public class FactoryMethods {
             }       // synchronized
         }       // factory == null
         return (Set<T>)factory.newInstance();
+    }
+
+    public  static  <T, R>   Map<T, R>   newMap(Class<T> inKeyClass, Class<R> inValueClass) throws InstantiationException {
+        FactoryRegistry registry = FactoryRegistry.getRegistry();
+        AbstractFactory factory = registry.getFactory(MAP);
+        if (factory == null) {
+            synchronized (registry) {
+                factory = registry.getFactory(MAP);
+                if (factory == null) {
+                    factory = new FactoryRegistryImpl.DefaultFactory(HashMap.class);
+                    registry.registerFactory(MAP, factory);
+                }
+            }       // synchronized
+        }       // factory == null
+        return (Map<T,R>)factory.newInstance();
     }
 
 
