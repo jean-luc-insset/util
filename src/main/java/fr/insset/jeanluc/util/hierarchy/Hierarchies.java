@@ -13,7 +13,7 @@ public abstract class Hierarchies {
 
 
     public  static void    setParent(Object inChild, Object inParent) {
-        ((Hierarchy)inChild).setParent(inParent);
+        ((Hierarchy)inChild).setParent((Hierarchy) inParent);
     }
 
 }

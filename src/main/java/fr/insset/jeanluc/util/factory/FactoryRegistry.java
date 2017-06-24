@@ -1,5 +1,7 @@
 package fr.insset.jeanluc.util.factory;
 
+import fr.insset.jeanluc.util.hierarchy.Hierarchy;
+
 
 
 /**
@@ -20,7 +22,7 @@ package fr.insset.jeanluc.util.factory;
  *
  * @author jldeleage
  */
-public interface FactoryRegistry extends Hierarchy {
+public interface FactoryRegistry extends Hierarchy<AbstractFactory> {
 
 
     public final static String  FACTORY_REGISTRY = "factory_registry";

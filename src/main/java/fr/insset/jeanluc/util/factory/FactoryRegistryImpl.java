@@ -2,6 +2,7 @@ package fr.insset.jeanluc.util.factory;
 
 
 
+import fr.insset.jeanluc.util.hierarchy.Hierarchy;
 import java.awt.event.HierarchyBoundsAdapter;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -72,9 +73,13 @@ public class FactoryRegistryImpl implements FactoryRegistry {
         return parent;
     }
 
+    public void setParent(Hierarchy<AbstractFactory> parent) {
+        this.parent = (FactoryRegistry) parent;
+    }
+
 
     @Override
-    public Object   getLocalProperty(Object inKey) {
+    public AbstractFactory   getLocalProperty(Object inKey) {
         return factories.get(inKey);
     }
     
