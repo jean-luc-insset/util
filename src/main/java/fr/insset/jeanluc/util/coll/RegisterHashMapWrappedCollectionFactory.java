@@ -33,6 +33,10 @@ public abstract class RegisterHashMapWrappedCollectionFactory {
                                 return new CompositeMapWrappedCollection((Collection) inArgs[0], (MapWrappedCollection)inArgs[1]);
                             }
                         }       // newInstance
+                        @Override
+                        public Class getBuiltClass() {
+                            return DefaultMapWrappedCollection.class;
+                        }
                     };      // new AbstractFactory
                     registry.registerFactory(MapWrappedCollection.HASH_MAP_WRAPPED_COLLECTION, factory);
                 }

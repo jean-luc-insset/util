@@ -9,8 +9,9 @@ package fr.insset.jeanluc.util.factory;
  *
  * @author jldeleage
  */
-public interface AbstractFactory {
+public interface AbstractFactory<T> {
 
-    public Object   newInstance(Object... inArgs) throws InstantiationException;
+    public <T> T     newInstance(Object... inArgs) throws InstantiationException;
+    public Class<T>  getBuiltClass();
 
 }

@@ -88,13 +88,13 @@ public interface FactoryRegistry extends Hierarchy<AbstractFactory> {
     // REGISTRATION                                                           //
     //------------------------------------------------------------------------//
 
-    void registerDefaultFactory(String inName, AbstractFactory inFactory);
+    void registerDefaultFactory(Object inName, AbstractFactory inFactory);
 
-    <T> void registerDefaultFactory(String inName, Class<T> inClass);
+    <T> void registerDefaultFactory(Object inName, Class<T> inClass);
 
-    void registerFactory(String inName, AbstractFactory inFactory);
+    void registerFactory(Object inName, AbstractFactory inFactory);
 
-    <T> void registerFactory(String inName, Class<T> inClass);
+    <T> void registerFactory(Object inName, Class<T> inClass);
 
 
     //------------------------------------------------------------------------//
@@ -102,8 +102,8 @@ public interface FactoryRegistry extends Hierarchy<AbstractFactory> {
     //------------------------------------------------------------------------//
 
 
-    public  AbstractFactory         getLocalFactory(String inName);
-    public  default AbstractFactory getFactory(String inName) {
+    public  AbstractFactory         getLocalFactory(Object inName);
+    public  default AbstractFactory getFactory(Object inName) {
         FactoryRegistry current = this;
         while (current != null) {
             AbstractFactory localFactory = current.getLocalFactory(inName);
@@ -121,7 +121,7 @@ public interface FactoryRegistry extends Hierarchy<AbstractFactory> {
     //========================================================================//
 
 
-    public static Object newInstance(String inId) throws InstantiationException {
+    public static Object newInstance(Object inId) throws InstantiationException {
         FactoryRegistry registry = getRegistry();
         AbstractFactory factory = registry.getFactory(inId);
         return factory.newInstance();
@@ -135,7 +135,6 @@ public interface FactoryRegistry extends Hierarchy<AbstractFactory> {
         }
         registry.registerDefaultFactory(inId, inClass);
     }
-
 
 
 }

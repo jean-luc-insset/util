@@ -90,30 +90,31 @@ public class FactoryRegistryImpl implements FactoryRegistry {
     //========================================================================//
 
 
-    public AbstractFactory getLocalFactory(String inName) {
+    public AbstractFactory getLocalFactory(Object inName) {
         return factories.get(inName);
     }
 
     @Override
-    public void registerFactory(String inName, AbstractFactory inFactory) {
+    public void registerFactory(Object inName, AbstractFactory inFactory) {
         factories.put(inName, inFactory);
     }
 
     @Override
-    public <T> void registerFactory(String inName, Class<T> inClass) {
+    public <T> void registerFactory(Object inName, Class<T> inClass) {
         registerFactory(inName, new DefaultFactory(inClass));
     }
 
     @Override
-    public void registerDefaultFactory(String inName, AbstractFactory inFactory) {
+    public void registerDefaultFactory(Object inName, AbstractFactory inFactory) {
         AbstractFactory factory = factories.get(inName);
         if (factory == null) {
             factories.put(inName, inFactory);
+            factories.put(inFactory.getBuiltClass(), inFactory);
         }
     }       // registerDefaultFactory
 
     @Override
-    public <T> void registerDefaultFactory(String inName, Class<T> inClass) {
+    public <T> void registerDefaultFactory(Object inName, Class<T> inClass) {
         registerDefaultFactory(inName, new DefaultFactory(inClass));
     }
 
@@ -122,7 +123,7 @@ public class FactoryRegistryImpl implements FactoryRegistry {
     //========================================================================//
 
 
-    private Map<String, AbstractFactory>        factories = new HashMap<>();
+    private Map<Object, AbstractFactory>        factories = new HashMap<>();
 
     /**
      * Root of the tree.
@@ -141,14 +142,14 @@ public class FactoryRegistryImpl implements FactoryRegistry {
     //========================================================================//
 
 
-    public static class DefaultFactory<T> implements AbstractFactory {
+    public static class DefaultFactory<T> implements AbstractFactory<T> {
 
         public DefaultFactory(Class<T> delegate) {
             this.delegate = delegate;
         }
 
         @Override
-        public Object newInstance(Object... inArgs) throws InstantiationException {
+        public T newInstance(Object... inArgs) throws InstantiationException {
             try {
                 // Why should we test ? The general case (anny number of args)
                 // works fine in the special case (no args)
@@ -165,7 +166,7 @@ public class FactoryRegistryImpl implements FactoryRegistry {
                             // "silent" exception : we are going to look for
                             // a zero or one parameter constructor.
                             Constructor constructor = delegate.getConstructor(new Class[0]);
-                            return constructor.newInstance(new Object[] { inArgs });
+                            return (T) constructor.newInstance(new Object[] { inArgs });
                         } catch (NoSuchMethodException | SecurityException | InstantiationException ex) {
                             Logger.getLogger(FactoryRegistryImpl.class.getName()).log(Level.SEVERE, null, ex);
                         }
@@ -179,7 +180,7 @@ public class FactoryRegistryImpl implements FactoryRegistry {
                     }
                     Parameter parameter = constructor.getParameters()[0];
                     if (parameter.isVarArgs()) {
-                        return constructor.newInstance(new Object[] { inArgs });                        
+                        return (T) constructor.newInstance(new Object[] { inArgs });                        
                     }
                 }       // constructorLoop
                 // We have found no constructor, either without parameters
@@ -193,6 +194,12 @@ public class FactoryRegistryImpl implements FactoryRegistry {
                 throw new InstantiationException(ex.getLocalizedMessage());
             }
         }
+
+        public Class<T> getBuiltClass() {
+            return delegate;
+        }
+
+
 
         private Class<T>    delegate;
     }       // DefaultFactory
