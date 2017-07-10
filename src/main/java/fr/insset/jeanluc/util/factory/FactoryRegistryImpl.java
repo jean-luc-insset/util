@@ -97,11 +97,13 @@ public class FactoryRegistryImpl implements FactoryRegistry {
     @Override
     public void registerFactory(Object inName, AbstractFactory inFactory) {
         factories.put(inName, inFactory);
+        factories.put(inFactory.getBuiltClass(), inFactory);
     }
 
     @Override
     public <T> void registerFactory(Object inName, Class<T> inClass) {
-        registerFactory(inName, new DefaultFactory(inClass));
+        DefaultFactory defaultFactory = new DefaultFactory(inClass);
+        registerFactory(inName, defaultFactory);
     }
 
     @Override
