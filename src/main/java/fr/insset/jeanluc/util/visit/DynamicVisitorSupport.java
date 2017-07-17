@@ -19,7 +19,7 @@ import java.util.logging.Logger;
  *
  * @author jldeleage
  */
-public class DynamicVisitorSupport {
+public class DynamicVisitorSupport implements DynamicVisitor {
 
 
     /**
@@ -81,6 +81,7 @@ public class DynamicVisitorSupport {
     //========================================================================//
 
 
+    @Override
     public Object genericVisit(Object inVisited, Object... inParameter)
             throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
         Class visitedClass = inVisited.getClass();
