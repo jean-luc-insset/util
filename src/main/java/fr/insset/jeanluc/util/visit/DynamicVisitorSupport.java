@@ -84,6 +84,9 @@ public class DynamicVisitorSupport implements DynamicVisitor {
     @Override
     public Object genericVisit(Object inVisited, Object... inParameter)
             throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+        if (inVisited == null) {
+            return null;
+        }
         Class visitedClass = inVisited.getClass();
         Method lookFor = lookFor(visitedClass);
         if (lookFor != null) {
