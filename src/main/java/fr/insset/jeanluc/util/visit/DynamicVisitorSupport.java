@@ -116,15 +116,15 @@ public class DynamicVisitorSupport implements DynamicVisitor {
             if (m!= null) {
                 return m;
             }
+            Class[] interfaces = current.getInterfaces();
+            for (Class anInterface : interfaces) {
+                m = lookFor(anInterface);
+                if (m!= null) {
+                    return m;
+                }
+            }
             current = current.getSuperclass();
         } while (current != null);
-        Class[] interfaces = inClass.getInterfaces();
-        for (Class anInterface : interfaces) {
-            Method m = lookFor(anInterface);
-            if (m!= null) {
-                return m;
-            }
-        }
         return null;
     }
 

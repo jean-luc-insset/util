@@ -121,9 +121,13 @@ public interface FactoryRegistry extends Hierarchy<AbstractFactory> {
     //========================================================================//
 
 
-    public static Object newInstance(Object inId) throws InstantiationException {
+    public static Object newInstance(Object inId) throws InstantiationException, IllegalAccessException {
         FactoryRegistry registry = getRegistry();
         AbstractFactory factory = registry.getFactory(inId);
+        if (factory == null && (inId instanceof Class)) {
+            Class   theClass = (Class)inId;
+            return theClass.newInstance();
+        }
         return factory.newInstance();
     }
 
