@@ -144,6 +144,7 @@ public class DynamicVisitorSupport implements DynamicVisitor {
     }
 
     private Map<Class, Method>      visitingMethods = new HashMap<>();
+    private Map<Integer, String>    symbols;
 
 
 }
